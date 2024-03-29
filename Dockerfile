@@ -16,7 +16,7 @@ WORKDIR /msd_lite/build
 RUN cmake .. && make -j$(nproc)
 
 # 第二阶段，创建最终镜像
-FROM busybox:stable-musl
+FROM arm64v8/busybox:stable-musl
 
 # 从构建阶段复制构建产物到最终镜像中
 COPY --from=msd_lite-builder /msd_lite/build/msd_lite /usr/bin/msd_lite
