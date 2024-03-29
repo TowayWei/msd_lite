@@ -34,4 +34,5 @@ RUN chmod +x /usr/bin/msd_lite
 EXPOSE 7022
 
 # 设置容器启动时执行的命令
-CMD ["/usr/bin/msd_lite", "-v", "-c", "/etc/msd_lite.conf"]
+ENTRYPOINT ["/usr/bin/msd_lite"]
+CMD ["-v", "-c", "/etc/msd_lite.conf"]
