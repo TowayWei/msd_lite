@@ -15,23 +15,20 @@ RUN git clone --recursive https://github.com/TowayWei/msd_lite.git /msd_lite
 WORKDIR /msd_lite/build
 RUN cmake .. && make -j$(nproc)
 
-# 列出build目录的内容以验证msd_lite是否构建成功
-RUN ls -la /msd_lite/build
-
-# 第二阶段，创建最终镜像
-FROM arm64v8/busybox:stable-musl
+# 第二阶段，创建最终镜像，使用带有glibc的busybox版本
+FROM arm64v8/busybox:glibc
 
 # 从构建阶段复制构建产物到最终镜像中
 COPY --from=msd_lite-builder /msd_lite/build/src/msd_lite /usr/bin/msd_lite
 
 # 从构建阶段复制配置文件到最终镜像中
-COPY --from=msd_lite-builder /msd_lite/conf/msd_lite.conf /etc/msd_lite.conf
+COPY --from=msd_lite-builder /msd_lite/build/msd_lite.conf.sample /etc/msd_lite.conf
 
 # 确保 msd_lite 二进制文件具有执行权限
 RUN chmod +x /usr/bin/msd_lite
 
 # 暴露 msd_lite 使用的端口
-EXPOSE 7022
+EXPOSE 7088
 
 # 设置容器启动时执行的命令
 ENTRYPOINT ["/usr/bin/msd_lite"]
