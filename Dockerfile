@@ -15,6 +15,9 @@ RUN git clone --recursive https://github.com/TowayWei/msd_lite.git /msd_lite
 WORKDIR /msd_lite/build
 RUN cmake .. && make -j$(nproc)
 
+# 列出build目录的内容以验证msd_lite是否构建成功
+RUN ls -la /msd_lite/build
+
 # 第二阶段，创建最终镜像
 FROM arm64v8/busybox:stable-musl
 
