@@ -1,5 +1,5 @@
 # 第一阶段，构建应用程序
-FROM arm64v8/ubuntu:latest as msd_lite-builder
+FROM ubuntu:latest as msd_lite-builder
 
 # 安装必要的构建工具和依赖
 RUN apt-get update && apt-get install -y \
@@ -16,7 +16,7 @@ WORKDIR /msd_lite/build
 RUN cmake .. && make -j$(nproc)
 
 # 第二阶段，创建最终镜像，使用带有glibc的busybox版本
-FROM arm64v8/busybox:glibc
+FROM busybox:glibc
 
 # 从构建阶段复制构建产物到最终镜像中
 COPY --from=msd_lite-builder /msd_lite/build/src/msd_lite /usr/bin/msd_lite
