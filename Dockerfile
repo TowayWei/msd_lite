@@ -22,7 +22,7 @@ RUN ls -la /msd_lite/build
 FROM arm64v8/busybox:stable-musl
 
 # 从构建阶段复制构建产物到最终镜像中
-COPY --from=msd_lite-builder /msd_lite/build/msd_lite /usr/bin/msd_lite
+COPY --from=msd_lite-builder /msd_lite/build/src/msd_lite /usr/bin/msd_lite
 
 # 从构建阶段复制配置文件到最终镜像中
 COPY --from=msd_lite-builder /msd_lite/conf/msd_lite.conf /etc/msd_lite.conf
